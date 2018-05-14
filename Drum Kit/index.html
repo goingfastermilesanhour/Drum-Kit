@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <div class="keys">
+
+        <div data-keyboard="82" class="key">
+            <kbd>R</kbd>
+            <span class="sound">D-Snare</span>
+        </div>
+
+        <div data-keyboard="65" class="key">
+            <kbd>A</kbd>
+            <span class="sound">Hihat</span>
+        </div>
+
+        <div data-keyboard="90" class="key">
+            <kbd>Z</kbd>
+            <span class="sound">Snare</span>
+        </div>
+
+        <div data-keyboard="86" class="key">
+            <kbd>V</kbd>
+            <span class="sound">Cymbal</span>
+       </div>
+
+        <div data-keyboard="73" class="key">
+            <kbd>I</kbd>
+            <span class="sound">M-Snare</span>
+        </div>
+
+        <div data-keyboard="69" class="key">
+            <kbd>E</kbd>
+            <span class="sound">Crash-17</span>
+        </div>
+
+      
+
+    </div>
+
+    <audio data-keyboard="82" src="double-snare.wav"></audio>
+    <audio data-keyboard="65" src="hihat.wav"></audio>
+    <audio data-keyboard="90" src="snare.wav"></audio>
+    <audio data-keyboard="86" src="hihat.wav"></audio>
+    <audio data-keyboard="73" src="metal-snare.wav"></audio>
+    <audio data-keyboard="69" src="crash-17.wav"></audio>
+   
+    <script>
+
+
+        window.addEventListener('keydown', function (e) {
+            const audio = document.querySelector(`audio[data-keyboard="${e.keyCode}"]`);
+            const key = document.querySelector(`.key[data-keyboard="${e.keyCode}"]`);
+            console.log(audio);
+            if (!audio) return;
+            audio.currentTime = 0; //rewind to the start. Every time I press the keyboard it will start to play the sound from the beginning.
+            audio.play();
+            //for the animation up on playing the key we send the key to the css playing class like this:
+            key.classList.add('playing');
+        });
+        
+        //functia care scoate 'playing' class dupa ce plays the sound ca sa dispara animationul: mai jos in forEach, este apelata atunci cand transitionEND
+        /*
+        it plays the playing class and 0.5 seconds later removes it */
+
+        function removeTransition(e) {
+            if (e.propertyName !== 'transform') return; //will skip it if the event is not a transform
+            this.classList.remove('playing');
+        };
+
+        const keys = document.querySelectorAll('.key');
+        keys.forEach(key => key.addEventListener('transitionend', removeTransition)); //each key from KEYS gets an event added to it which is transitionend and when it ends duce la functia removeTransition unde vom remove clasa playing.
+
+    </script>
+
+</body>
+
+</html>
